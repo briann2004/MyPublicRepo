@@ -1,7 +1,29 @@
-## Sample Code
+import java.math.BigDecimal;
+import java.math.MathContext;
 
-```python
-def hello_world():
-    print("Hello, My name is Brian Ong!")
+public class Main {
+    public static void main(String[] args) {
+        // Create a BigDecimal instance representing the value 1.23
+        BigDecimal x = new BigDecimal("1.23");
 
-hello_world()
+        // Calculate the hyperbolic cosine of x
+        BigDecimal coshX = calculateCosh(x);
+
+        // Print the result of cosh(1.23)
+        System.out.println("cosh(" + x + ") = " + coshX);
+    }
+
+    public static BigDecimal calculateCosh(BigDecimal x) {
+        // Calculate e^x using the formula: exp(x) = sqrt(1 + x^2)
+        BigDecimal exp = BigDecimal.ONE.add(x.multiply(x)).sqrt(MathContext.DECIMAL128);
+
+        // Calculate numerator of cosh(x) using the formula: 1 + (exp(x)^2 / 2)
+        BigDecimal numerator = BigDecimal.ONE.add(exp.multiply(exp).divide(BigDecimal.valueOf(2), MathContext.DECIMAL128));
+
+        // Calculate denominator of cosh(x) using the formula: 1 - (exp(x)^2 / 2)
+        BigDecimal denominator = BigDecimal.ONE.subtract(exp.multiply(exp).divide(BigDecimal.valueOf(2), MathContext.DECIMAL128));
+
+        // Return the result of numerator / denominator to get cosh(x)
+        return numerator.divide(denominator, MathContext.DECIMAL128);
+    }
+}
